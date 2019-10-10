@@ -209,30 +209,45 @@ var usedLetters: Set<Character> = [] //
 
 startloop: repeat {
     var indicies: Set<Int> = []
-    
-    print("Letters entered: \(String(usedLetters))")
+    print()
     print("Type a letter")
+    print("List of used letters : \(String(usedLetters))")
+    print("You guessed \(count) times")
     let response = readLine() ?? "a"
     
-    if response.count != 1 {
-        print("Only 1 character allowed, please enter again")
+    if response.count != 1 { // inputing more than one letter at a time
+        print("You can only try 1 letter at a time!")
+        print("Please try again")
+        continue startloop
+    }
+    let playerLetterGuess = Character(response) // new readLine
+    
+    if usedLetters.contains(playerLetterGuess) { // using same letter twice
+        print("You've already entered this letter")
+        print()
         continue startloop
     }
     
-    
-    let playerLetterGuess = Character(response)
-    
-    if usedLetters.contains(playerLetterGuess) {
-        print("You already entered this letter")
+    if playerLetterGuess.isNumber { // Error: when player puts a number
+        print("Hey... this is Hangman... not math")
+        print("Try a letter")
+        count += 1
         continue startloop
     }
-
-    
+    if playerLetterGuess.isNumber {
+            print("Hey... this is Hangman... not math")
+            print("Try a letter")
+            count += 1
+            continue startloop
+    }
+    if playerLetterGuess.isPunctuation {
+            print("Hey... this is Hangman...")
+            print("Try a letter")
+            count += 1
+            continue startloop
+    }
     usedLetters.insert(playerLetterGuess)
-        
-    
     // verify character hasn't been used before
-    
     if wordComputerPicked.contains(playerLetterGuess) {
         print("You're right!")
         count += 1//finds if the character is correct
@@ -244,23 +259,10 @@ startloop: repeat {
         for (index, _) in dashes.enumerated() {
             if indicies.contains(index) {
                 dashes[index] = playerLetterGuess
-                usedLetters.insert(playerLetterGuess)
             }
         }
         print(String(dashes))
-//    }
-//    for (index, char) in usedLetters.enumerated() {
-//        if playerLetterGuess == char {
-//            print("You already tried that letter")
-//            count += 1
-    } else if playerLetterGuess.isNumber {
-        print("Hey... this is Hangman... not math")
-        print("Try a letter")
-        count += 1
-    } else if playerLetterGuess.isPunctuation {
-        print("Hey... this is Hangman...")
-        print("Try a letter")
-        count += 1
+        
     }else {
         maxNumberofWrongGuesses -= 1
     }
