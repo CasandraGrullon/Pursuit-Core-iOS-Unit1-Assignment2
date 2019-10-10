@@ -12,41 +12,39 @@ print("Let's Play Hangman!")
 //computer
 let allTheWords =  ["chemical", "chest", "chief", "chin", "church", "circle", "clean", "clear", "clock", "cloth", "cloud", "coal", "coat", "cold"]
 var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-var wordComputerPicked = allTheWords.randomElement() ?? "hangman"
-var wordComputerPickedArr = Array(wordComputerPicked)
-var dashes = String(repeatElement("_", count: wordComputerPickedArr.count))
+var wordComputerPicked: [Character] = Array(allTheWords.randomElement() ?? "hangman")
+var dashes: [Character] = Array(repeatElement("_", count: wordComputerPicked.count))
 
 print(wordComputerPicked)
 //player
 var letterPlayed = ""
-var usedLetters = String()
 var maxNumberofWrongGuesses = 6
 var numberOfGuesses = 0
 
 //hangman
 var hangmanStart = """
-    ..--------------------------:
-    .==========================:
-    |||                     |8|
-    |||                     |8|
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||
-    |||55555555555555555555555555555555555555\
-    |||======================================|
+..--------------------------:
+.==========================:
+|||                     |8|
+|||                     |8|
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||
+|||55555555555555555555555555555555555555\
+|||======================================|
 """
 var hangmanHead = """
 ..--------------------------:
@@ -198,50 +196,106 @@ var hangmanGameOver =
 |||
 |||======================================|
 """
- 
+
 var condition = true
 
 //Gameplay
-print("Type a letter")
 print()
-print(dashes)
+print(String(dashes))
 
-repeat {
-var playerLetterGuess = readLine() ?? "a"
-    if wordComputerPickedArr.contains(Character(playerLetterGuess)) {
-        print("right")//append into dashes
-        for (index , char) in wordComputerPickedArr.enumerated() {
-            if String(char) == playerLetterGuess {
-            var dashesArr = Array(dashes)
-            dashesArr[index] = Character(playerLetterGuess)
+var count = 0
+
+var usedLetters: Set<Character> = [] //
+
+startloop: repeat {
+    var indicies: Set<Int> = []
+    
+    print("Letters entered: \(String(usedLetters))")
+    print("Type a letter")
+    let response = readLine() ?? "a"
+    
+    if response.count != 1 {
+        print("Only 1 character allowed, please enter again")
+        continue startloop
+    }
+    
+    
+    let playerLetterGuess = Character(response)
+    
+    if usedLetters.contains(playerLetterGuess) {
+        print("You already entered this letter")
+        continue startloop
+    }
+
+    
+    usedLetters.insert(playerLetterGuess)
+        
+    
+    // verify character hasn't been used before
+    
+    if wordComputerPicked.contains(playerLetterGuess) {
+        print("You're right!")
+        count += 1//finds if the character is correct
+        for (index , char) in wordComputerPicked.enumerated() {
+            if char == playerLetterGuess {
+                indicies.insert(index)
+            }
+        }// for loop to update dashes array with correct characters
+        for (index, _) in dashes.enumerated() {
+            if indicies.contains(index) {
+                dashes[index] = playerLetterGuess
+                usedLetters.insert(playerLetterGuess)
             }
         }
-        
-        
-        
-        
-        
-        
-        
-    } else {
-        print("Wrong")
+        print(String(dashes))
+//    }
+//    for (index, char) in usedLetters.enumerated() {
+//        if playerLetterGuess == char {
+//            print("You already tried that letter")
+//            count += 1
+    } else if playerLetterGuess.isNumber {
+        print("Hey... this is Hangman... not math")
+        print("Try a letter")
+        count += 1
+    } else if playerLetterGuess.isPunctuation {
+        print("Hey... this is Hangman...")
+        print("Try a letter")
+        count += 1
+    }else {
         maxNumberofWrongGuesses -= 1
     }
     if maxNumberofWrongGuesses == 5 {
+        print("Oooh... sorry. Try again")
+        print()
+        count += 1
         print(hangmanHead)
     } else if maxNumberofWrongGuesses == 4 {
+        print("Oooh... sorry. Try again")
+        print()
+        count += 1
         print(hangmanBody)
     } else if maxNumberofWrongGuesses == 3 {
+        print("Oooh... sorry. Try again")
+        print()
+        count += 1
         print(hangmanArm1)
     } else if maxNumberofWrongGuesses == 2 {
+        print("Oooh... sorry. Try again")
+        print()
+        count += 1
         print(hangmanArm2)
     } else if maxNumberofWrongGuesses == 1 {
+        print("You have one more chance left!")
+        print()
+        count += 1
         print(hangmanLeg1)
     } else if maxNumberofWrongGuesses == 0 {
         print("HANG MAN! Game Over!")
+        print()
         print(hangmanGameOver)
-//    } else {
-//        print("I don't know what you're doing wrong...")
+        //    } else {
+        //        print("I don't know what you're doing wrong...")
+        
     }
-
+    
 } while condition
