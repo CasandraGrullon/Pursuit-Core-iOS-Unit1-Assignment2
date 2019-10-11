@@ -15,7 +15,6 @@ var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p",
 var wordComputerPicked: [Character] = Array(allTheWords.randomElement() ?? "hangman")
 var dashes: [Character] = Array(repeatElement("_", count: wordComputerPicked.count))
 
-print(wordComputerPicked)
 //player
 var letterPlayed = ""
 var maxNumberofWrongGuesses = 6
@@ -207,7 +206,7 @@ var count = 0
 
 var usedLetters: Set<Character> = [] //
 
-startloop: repeat {
+gamestartLoop: repeat {
     var indicies: Set<Int> = []
     print()
     print("Type a letter")
@@ -218,33 +217,33 @@ startloop: repeat {
     if response.count != 1 { // inputing more than one letter at a time
         print("You can only try 1 letter at a time!")
         print("Please try again")
-        continue startloop
+        continue gamestartLoop
     }
     let playerLetterGuess = Character(response) // new readLine
     
     if usedLetters.contains(playerLetterGuess) { // using same letter twice
         print("You've already entered this letter")
         print()
-        continue startloop
+        continue gamestartLoop
     }
     
     if playerLetterGuess.isNumber { // Error: when player puts a number
         print("Hey... this is Hangman... not math")
         print("Try a letter")
         count += 1
-        continue startloop
+        continue gamestartLoop
     }
     if playerLetterGuess.isNumber {
             print("Hey... this is Hangman... not math")
             print("Try a letter")
             count += 1
-            continue startloop
+            continue gamestartLoop
     }
     if playerLetterGuess.isPunctuation {
             print("Hey... this is Hangman...")
             print("Try a letter")
             count += 1
-            continue startloop
+            continue gamestartLoop
     }
     usedLetters.insert(playerLetterGuess)
     // verify character hasn't been used before
@@ -276,8 +275,21 @@ startloop: repeat {
        print("Congratulations!")
         print("You won!")
         // TO DO: let player start game again
-        
-    } else if maxNumberofWrongGuesses == 4 {
+        // restart game
+       }
+           var playAgain = readLine()
+           print("Would you like to play another game? Yes or no?")
+           if dashes == wordComputerPicked {
+               restart : switch playAgain {
+               case "yes" :
+                continue gamestartLoop
+               case "no" :
+                   break
+               default :
+                   print("type yes to play a new game, or no to exit.")
+                   playAgain = readLine()
+               }
+        } else if maxNumberofWrongGuesses == 4 {
         print("Oooh... sorry. Try again")
         print()
         count += 1
@@ -299,10 +311,22 @@ startloop: repeat {
         print(hangmanLeg1)
     } else if maxNumberofWrongGuesses == 0 {
         print("HANG MAN! Game Over!")
+        print("The word was \(wordComputerPicked)")
         print()
         print(hangmanGameOver)
-        //TO DO: Let player restart game.
-        
+        // restart game
     }
-    
+    if maxNumberofWrongGuesses == 0 {
+        _ = readLine()
+        print("Would you like to play another game? Yes or no?")
+        restart : switch playAgain {
+        case "yes" :
+            continue gamestartLoop
+        case "no" :
+            break
+        default :
+            print("type yes to play a new game, or no to exit.")
+            playAgain = readLine()
+        }
+        }
 } while condition
