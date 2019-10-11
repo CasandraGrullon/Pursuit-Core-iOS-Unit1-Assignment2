@@ -206,7 +206,8 @@ var count = 0
 
 var usedLetters: Set<Character> = [] //
 
-gamestartLoop: repeat {
+func gameStart() {
+gamestartLoop : repeat {
     var indicies: Set<Int> = []
     print()
     print("Type a letter")
@@ -274,21 +275,15 @@ gamestartLoop: repeat {
     if dashes == wordComputerPicked {
        print("Congratulations!")
         print("You won!")
-        // TO DO: let player start game again
-        // restart game
-       }
-           var playAgain = readLine()
-           print("Would you like to play another game? Yes or no?")
-           if dashes == wordComputerPicked {
-               restart : switch playAgain {
-               case "yes" :
-                continue gamestartLoop
-               case "no" :
-                   break
-               default :
-                   print("type yes to play a new game, or no to exit.")
-                   playAgain = readLine()
-               }
+        print()
+        print("Would you like to start a new game? Yes or No?")
+        let playerRestart = readLine()
+    switch true {
+    case playerRestart == "yes" :
+        gameStart()
+    default :
+        print("Thanks for playing!")
+    }
         } else if maxNumberofWrongGuesses == 4 {
         print("Oooh... sorry. Try again")
         print()
@@ -319,14 +314,13 @@ gamestartLoop: repeat {
     if maxNumberofWrongGuesses == 0 {
         _ = readLine()
         print("Would you like to play another game? Yes or no?")
-        restart : switch playAgain {
-        case "yes" :
-            continue gamestartLoop
-        case "no" :
-            break
+        let playerRestart = readLine()
+        switch true {
+        case playerRestart == "yes" :
+            gameStart()
         default :
-            print("type yes to play a new game, or no to exit.")
-            playAgain = readLine()
+            print("Thanks for playing!")
         }
         }
 } while condition
+}
