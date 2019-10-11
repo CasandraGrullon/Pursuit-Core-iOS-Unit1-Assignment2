@@ -271,6 +271,12 @@ startloop: repeat {
         print()
         count += 1
         print(hangmanHead)
+    }
+    if dashes == wordComputerPicked {
+       print("Congratulations!")
+        print("You won!")
+        // TO DO: let player start game again
+        
     } else if maxNumberofWrongGuesses == 4 {
         print("Oooh... sorry. Try again")
         print()
@@ -295,8 +301,7 @@ startloop: repeat {
         print("HANG MAN! Game Over!")
         print()
         print(hangmanGameOver)
-        //    } else {
-        //        print("I don't know what you're doing wrong...")
+        //TO DO: Let player restart game.
         
     }
     
