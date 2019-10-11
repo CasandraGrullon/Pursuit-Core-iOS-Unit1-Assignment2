@@ -324,3 +324,5 @@ gamestartLoop : repeat {
         }
 } while condition
 }
+
+gameStart()
